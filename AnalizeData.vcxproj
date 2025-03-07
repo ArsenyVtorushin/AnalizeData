@@ -130,10 +130,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="male_names_rus.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="names.csv" />
+    <None Include="russian_names.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

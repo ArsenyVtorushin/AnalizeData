@@ -20,12 +20,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="male_names_rus.txt">
-      <Filter>Файлы ресурсов</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="names.csv">
+    <None Include="russian_names.csv">
       <Filter>Файлы ресурсов</Filter>
     </None>
   </ItemGroup>

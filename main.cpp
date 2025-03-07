@@ -1,27 +1,56 @@
+#include <Windows.h>
 #include <iostream>
 #include <fstream>
 #include <random>
 #include <string>
 #include <vector>
+#include <list>
+#include <set>
+#include <sstream>
 
 // Анализ данных
 // Чтение и запись из таблиц
 // 
-// 
-//
 
 
-struct NameQuantity
+class Name
 {
-	std::string name; 
-	int quantity;
-
-	NameQuantity() :NameQuantity("", 0) {}
-
-	NameQuantity(std::string name, int quantity)
+public:
+	Name() :Name("", ' ', 0) {}
+	Name(std::string name, char sex, int quantity)
 		:name(name),
+		sex(sex),
 		quantity(quantity)
 	{}
+
+	Name(const Name& other)
+	{
+		this->name = other.name;
+		this->sex = other.sex;
+		this->quantity = other.quantity;
+	}
+
+	~Name() = default;
+
+
+	void SetName(std::string name) { this->name = name; }
+	void SetSex(char sex) { this->sex = sex; }
+	void SetQuantity(int quantity) { this->quantity = quantity; }
+
+	auto GetName()const -> std::string { return this->name; }
+	auto GetSex()const -> char { return this->sex; }
+	auto GetQuantity()const -> int { return this->quantity; }
+
+
+	friend bool operator < (const Name& rsv, const Name& lsv)
+	{
+		return rsv < lsv;
+	}
+
+private:
+	std::string name;
+	char sex;
+	int quantity;
 };
 
 
@@ -30,10 +59,12 @@ struct NameQuantity
 
 int main()
 {
-	::setlocale(LC_ALL, "ru"); // :: - обознчение для глобальной библиотеки стандартных функций языка Си
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
 
-	std::vector<NameQuantity> data; 
+	std::vector<Name> data;
 
+	/*
 	//===================================================
 	// Подготовим данные для анализа если их нет
 	//
@@ -56,7 +87,7 @@ int main()
 				std::uniform_int_distribution<int> prov(0, 100'000); // провайдер "причесывает" число в границы
 				for (auto& i : data)
 				{
-					i.quantity = prov(gen);
+					i.SetQuantity(prov(gen));
 				}
 			}
 		}
@@ -67,8 +98,9 @@ int main()
 		//
 		for (size_t i = 0; i < 10; i++)
 		{
-			std::cout << data[i].name << " " << data[i].quantity << '\n';
+			std::cout << data[i].GetName() << " " << data[i].GetQuantity() << '\n';
 		}
+
 
 		//==================================================
 		// Заполняем names.csv
@@ -80,10 +112,48 @@ int main()
 		outf << "name;quantity;\n";
 		for (auto& i : data)
 		{
-			outf << i.name << ';' << i.quantity << ";\n";
+			outf << i.GetName() << ';' << i.GetQuantity() << ";\n";
 		}
 		outf.close();
 	}
+	*/
+
+	std::ifstream in_file;
+	in_file.open("russian_names.csv");
+
+	if (!in_file.is_open())
+	{
+		std::cout << "you idiot";
+	}
+	else
+	
+	{
+		std::string str;
+		std::getline(in_file, str, '\n');
+		while (!in_file.eof())
+		{
+			std::string str;
+			std::getline(in_file, str, '\n');
+			std::stringstream str_stream(str);
+			
+			std::string name;
+			std::string sex;
+			std::string quantity;
+
+			std::getline(str_stream, name, ';'); // 1st cell with id doesnt count
+			std::getline(str_stream, name, ';');
+			std::getline(str_stream, sex, ';');
+			std::getline(str_stream, quantity, ';');
+
+			data.emplace_back(name, sex[0], std::stoi(quantity));
+
+			
+		}
+	}
+
+	in_file.close();
+
  
 	return 0;
 }
+
