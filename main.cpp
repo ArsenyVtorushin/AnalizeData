@@ -88,7 +88,7 @@ private:
 void Statistics(std::multiset<Name> names);
 double Median(std::vector<int> frqs);
 double Average(std::vector<int> frqs);
-void MyNameStatistics(const Name name);
+void MyNameStatistics(const Name name, int max, int min, double average);
 
 
 
@@ -210,6 +210,8 @@ void Statistics(std::multiset<Name> names)
 	int ordinaryWomen = 0, ordinaryMen = 0;
 
 	Name myName;
+	int min = names.begin()->GetQuantity();
+	double average = 0;
 
 	for (auto& el : names)
 	{
@@ -252,7 +254,11 @@ void Statistics(std::multiset<Name> names)
 
 		if (el.GetName() == "Арсений")
 			myName = el;
+
+		average += el.GetQuantity();
 	}
+	average /= names.size();
+	int max = popularAll.GetQuantity();
 
 	std::cout << "1) Самое популярное имя: " << popularAll.GetName()
 		<< "\n     Кол-во среди всех записей: " << popularAll.GetQuantity()
@@ -281,8 +287,9 @@ void Statistics(std::multiset<Name> names)
 		<< "\n    Среди женщин: " << ordinaryWomen
 		<< "\n    Среди мужчин: " << ordinaryMen;
 
+	
 
-	MyNameStatistics(myName);
+	MyNameStatistics(myName, max, min, average);
 }
 
 
@@ -311,7 +318,7 @@ double Average(std::vector<int> frqs)
 
 
 
-void MyNameStatistics(const Name name)
+void MyNameStatistics(const Name name, int max, int min, double average)
 {
 	std::cout << "\n\n\n     My Name Statistics\n"
 		<< "Моё имя: " << name.GetName()
@@ -320,4 +327,8 @@ void MyNameStatistics(const Name name)
 		std::cout << "\nИмя редкое\n";
 	else
 		std::cout << "\nИмя обычное\n";
+
+	std::cout << "От максимального значения частота моего имени отстоит на: " << std::abs(name.GetQuantity() - max)
+		<< "\nОт минимального значения частота моего имени отстоит на: " << std::abs(name.GetQuantity() - min)
+		<< "\nОт среднего значения частота моего имени отстоит на: " << std::abs(name.GetQuantity() - average) << "\n\n";
 }
