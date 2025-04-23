@@ -206,6 +206,7 @@ void Statistics(std::multiset<Name> names)
 
 	int zeroWomen = 0, zeroMen = 0;
 	int rareWomen = 0, rareMen = 0;
+	int ordinaryWomen = 0, ordinaryMen = 0;
 
 
 	for (auto& el : names)
@@ -223,6 +224,8 @@ void Statistics(std::multiset<Name> names)
 
 			if (el.IsRare())
 				rareWomen++;
+			else
+				ordinaryWomen++;
 
 			frqWomen.push_back(el.GetQuantity());
 		}
@@ -237,6 +240,8 @@ void Statistics(std::multiset<Name> names)
 
 			if (el.IsRare())
 				rareMen++;
+			else
+				ordinaryMen++;
 
 			frqMen.push_back(el.GetQuantity());
 		}
@@ -266,6 +271,11 @@ void Statistics(std::multiset<Name> names)
 	std::cout << "\n\n6) Количество редких (до " << RARE_NAME_UNDER << ") имён\n    Среди всех : " << rareWomen + rareMen
 		<< "\n    Среди женщин: " << rareWomen
 		<< "\n    Среди мужчин: " << rareMen;
+
+	std::cout << "\n\n6) Количество обычных (от " << RARE_NAME_UNDER << ") имён\n    Среди всех : " << ordinaryWomen + ordinaryMen
+		<< "\n    Среди женщин: " << ordinaryWomen
+		<< "\n    Среди мужчин: " << ordinaryMen;
+
 }
 
 
