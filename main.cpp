@@ -69,6 +69,7 @@ private:
 
 
 void Statistics(std::multiset<Name> names);
+double Median(std::vector<int> frqs);
 
 
 
@@ -181,7 +182,12 @@ void Statistics(std::multiset<Name> names)
 	Name popularWomen{ *names.begin() };
 	Name popularMen{ *names.begin() };
 
+	std::vector<int> frqAll;
+	std::vector<int> frqMen;
+	std::vector<int> frqWomen;
+
 	int zeroWomen = 0, zeroMen = 0;
+
 
 	for (auto& el : names)
 	{
@@ -195,6 +201,8 @@ void Statistics(std::multiset<Name> names)
 
 			if (el.GetQuantity() == 0)
 				zeroWomen++;
+
+			frqWomen.push_back(el.GetQuantity());
 		}
 
 		if (el.GetSex() == 'М')
@@ -204,7 +212,11 @@ void Statistics(std::multiset<Name> names)
 
 			if (el.GetQuantity() == 0)
 				zeroMen++;
+
+			frqMen.push_back(el.GetQuantity());
 		}
+
+		frqAll.push_back(el.GetQuantity());
 	}
 
 	std::cout << "1) Самое популярное имя: " << popularAll.GetName()
@@ -217,4 +229,21 @@ void Statistics(std::multiset<Name> names)
 	std::cout << "\n\n3) Не имеют носителей\n    Среди всех: " << zeroWomen + zeroMen
 		<< "\n    Среди женщин: " << zeroWomen
 		<< "\n    Среди мужчин: " << zeroMen;
+
+	std::cout << "\n\n4) Медианное значение по частоте\n    Среди всех: " << Median(frqAll)
+		<< "\n    Среди женщин: " << Median(frqWomen)
+		<< "\n    Среди мужчин: " << Median(frqMen);
+}
+
+
+
+
+double Median(std::vector<int> frqs)
+{
+	std::sort(frqs.begin(), frqs.end());
+
+	if (frqs.size() % 2 != 0)
+		return frqs[frqs.size() / 2];
+	else
+		return (frqs[frqs.size() / 2 - 1] + frqs[frqs.size() / 2]) / 2;
 }
