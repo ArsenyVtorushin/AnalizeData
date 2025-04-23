@@ -1,36 +1,36 @@
 #include <Windows.h>
 #include <iostream>
 #include <fstream>
-#include <random>
-#include <string>
-#include <vector>
-#include <list>
-#include <set>
 #include <sstream>
+#include <string>
+#include <list>
+#include <vector>
+#include <set>
+#include <algorithm>
 
-// Анализ данных
-// Чтение и запись из таблиц
-// 
+
+// Data analisis
+// Table reading and writing
 
 
 class Name
 {
 public:
-	Name() :Name("", ' ', 0) {}
+	Name() :Name("", ' ', 0) {} // default constructor - for vector/list storage
 	Name(std::string name, char sex, int quantity)
 		:name(name),
 		sex(sex),
 		quantity(quantity)
 	{}
 
-	Name(const Name& other)
+	Name(const Name& other) // copy constructor - for vector/list storage
 	{
 		this->name = other.name;
 		this->sex = other.sex;
 		this->quantity = other.quantity;
 	}
 
-	~Name() = default;
+	~Name() = default; // public destructor - for vector/list storage
 
 
 	void SetName(std::string name) { this->name = name; }
@@ -44,15 +44,31 @@ public:
 
 	friend bool operator < (const Name& rsv, const Name& lsv)
 	{
-		return rsv < lsv;
+		for (size_t i = 0; i < (rsv.GetName().size() < lsv.GetName().size() ? rsv.GetName().size() : lsv.GetName().size())/* min name size */; i++)
+		{
+			if (rsv.GetName()[i] < lsv.GetName()[i])
+			{
+				return true;
+			}
+			else if (rsv.GetName()[i] > lsv.GetName()[i])
+			{
+				return false;
+			}
+		}
+		return false;
 	}
 
 private:
-	std::string name;
+	std::string name; // set/multiset comparison field
 	char sex;
 	int quantity;
 };
 
+
+
+
+
+void Statistics(std::multiset<Name> names);
 
 
 
@@ -62,7 +78,7 @@ int main()
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 
-	std::vector<Name> data;
+	std::multiset<Name> data;
 
 	/*
 	//===================================================
@@ -126,10 +142,9 @@ int main()
 		std::cout << "you idiot";
 	}
 	else
-	
 	{
 		std::string str;
-		std::getline(in_file, str, '\n');
+		std::getline(in_file, str, '\n'); // first string is heading, we skip it
 		while (!in_file.eof())
 		{
 			std::string str;
@@ -140,20 +155,37 @@ int main()
 			std::string sex;
 			std::string quantity;
 
-			std::getline(str_stream, name, ';'); // 1st cell with id doesnt count
+			std::getline(str_stream, name, ';'); // first cell with id doesn't count
 			std::getline(str_stream, name, ';');
 			std::getline(str_stream, sex, ';');
 			std::getline(str_stream, quantity, ';');
 
-			data.emplace_back(name, sex[0], std::stoi(quantity));
-
-			
+			data.insert({ name, sex[0], std::stoi(quantity) });
 		}
 	}
 
 	in_file.close();
 
- 
+	Statistics(data);
+
 	return 0;
 }
 
+
+
+
+
+void Statistics(std::multiset<Name> names)
+{
+	Name popularAll{ *names.begin() };	
+
+	for (auto& el : names)
+	{
+		if (el.GetQuantity() > popularAll.GetQuantity())
+			popularAll = el;
+	}
+
+	std::cout << "1) Самое популярное имя: " << popularAll.GetName()
+		<< "\n     Кол-во среди всех записей: " << popularAll.GetQuantity()
+		<< "\n     Кол-во среди записей его пола: " << popularAll.GetQuantity();
+}
