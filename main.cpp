@@ -88,6 +88,7 @@ private:
 void Statistics(std::multiset<Name> names);
 double Median(std::vector<int> frqs);
 double Average(std::vector<int> frqs);
+void MyNameStatistics(const Name name);
 
 
 
@@ -208,6 +209,7 @@ void Statistics(std::multiset<Name> names)
 	int rareWomen = 0, rareMen = 0;
 	int ordinaryWomen = 0, ordinaryMen = 0;
 
+	Name myName;
 
 	for (auto& el : names)
 	{
@@ -247,6 +249,9 @@ void Statistics(std::multiset<Name> names)
 		}
 
 		frqAll.push_back(el.GetQuantity());
+
+		if (el.GetName() == "Арсений")
+			myName = el;
 	}
 
 	std::cout << "1) Самое популярное имя: " << popularAll.GetName()
@@ -276,6 +281,8 @@ void Statistics(std::multiset<Name> names)
 		<< "\n    Среди женщин: " << ordinaryWomen
 		<< "\n    Среди мужчин: " << ordinaryMen;
 
+
+	MyNameStatistics(myName);
 }
 
 
@@ -299,4 +306,14 @@ double Average(std::vector<int> frqs)
 	for (auto& el : frqs)
 		sum += el;
 	return sum / frqs.size();
+}
+
+
+
+
+void MyNameStatistics(const Name name)
+{
+	std::cout << "\n\n\n     My Name Statistics\n"
+		<< "Моё имя: " << name.GetName()
+		<< "\nКоличество носителей: " << name.GetQuantity();
 }
