@@ -177,15 +177,32 @@ int main()
 
 void Statistics(std::multiset<Name> names)
 {
-	Name popularAll{ *names.begin() };	
+	Name popularAll{ *names.begin() };
+	Name popularWomen{ *names.begin() };
+	Name popularMen{ *names.begin() };
 
 	for (auto& el : names)
 	{
 		if (el.GetQuantity() > popularAll.GetQuantity())
 			popularAll = el;
+
+		if (el.GetSex() == 'Ж')
+		{
+			if (el.GetQuantity() > popularWomen.GetQuantity())
+				popularWomen = el;
+		}
+
+		if (el.GetSex() == 'М')
+		{
+			if (el.GetQuantity() > popularMen.GetQuantity())
+				popularMen = el;
+		}
 	}
 
 	std::cout << "1) Самое популярное имя: " << popularAll.GetName()
 		<< "\n     Кол-во среди всех записей: " << popularAll.GetQuantity()
 		<< "\n     Кол-во среди записей его пола: " << popularAll.GetQuantity();
+
+	std::cout << "\n\n2) Самое популярное имя среди женщин: " << popularWomen.GetName()
+		<< "\n   Самое популярное имя среди мужчин: " << popularMen.GetName();
 }
