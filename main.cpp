@@ -318,4 +318,6 @@ void MyNameStatistics(const Name name)
 		<< "\nКоличество носителей: " << name.GetQuantity();
 	if (name.IsRare())
 		std::cout << "\nИмя редкое\n";
+	else
+		std::cout << "\nИмя обычное\n";
 }
