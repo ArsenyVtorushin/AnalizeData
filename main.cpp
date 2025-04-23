@@ -70,6 +70,7 @@ private:
 
 void Statistics(std::multiset<Name> names);
 double Median(std::vector<int> frqs);
+double Average(std::vector<int> frqs);
 
 
 
@@ -233,6 +234,10 @@ void Statistics(std::multiset<Name> names)
 	std::cout << "\n\n4) Медианное значение по частоте\n    Среди всех: " << Median(frqAll)
 		<< "\n    Среди женщин: " << Median(frqWomen)
 		<< "\n    Среди мужчин: " << Median(frqMen);
+
+	std::cout << "\n\n5) Среднее значение носителей имён\n    Среди всех: " << Average(frqAll)
+		<< "\n    Среди женщин: " << Average(frqWomen)
+		<< "\n    Среди мужчин: " << Average(frqMen);
 }
 
 
@@ -246,4 +251,14 @@ double Median(std::vector<int> frqs)
 		return frqs[frqs.size() / 2];
 	else
 		return (frqs[frqs.size() / 2 - 1] + frqs[frqs.size() / 2]) / 2;
+}
+
+
+
+double Average(std::vector<int> frqs)
+{
+	int sum = 0;
+	for (auto& el : frqs)
+		sum += el;
+	return sum / frqs.size();
 }
