@@ -8,6 +8,7 @@
 #include <set>
 #include <algorithm>
 
+#define RARE_NAME_UNDER 10000
 
 // Data analisis
 // Table reading and writing
@@ -39,6 +40,9 @@ public:
 	}
 
 	~Name() = default; // public destructor - for vector/list storage
+
+
+	bool IsRare()const { return this->quantity < RARE_NAME_UNDER; }
 
 
 	void SetName(std::string name) { this->name = name; }
@@ -196,6 +200,7 @@ void Statistics(std::multiset<Name> names)
 	std::vector<int> frqWomen;
 
 	int zeroWomen = 0, zeroMen = 0;
+	int rareWomen = 0, rareMen = 0;
 
 
 	for (auto& el : names)
@@ -211,6 +216,9 @@ void Statistics(std::multiset<Name> names)
 			if (el.GetQuantity() == 0)
 				zeroWomen++;
 
+			if (el.IsRare())
+				rareWomen++;
+
 			frqWomen.push_back(el.GetQuantity());
 		}
 
@@ -221,6 +229,9 @@ void Statistics(std::multiset<Name> names)
 
 			if (el.GetQuantity() == 0)
 				zeroMen++;
+
+			if (el.IsRare())
+				rareMen++;
 
 			frqMen.push_back(el.GetQuantity());
 		}
@@ -246,6 +257,10 @@ void Statistics(std::multiset<Name> names)
 	std::cout << "\n\n5) Среднее значение носителей имён\n    Среди всех: " << Average(frqAll)
 		<< "\n    Среди женщин: " << Average(frqWomen)
 		<< "\n    Среди мужчин: " << Average(frqMen);
+
+	std::cout << "\n\n6) Количество редких (до " << RARE_NAME_UNDER << ") имён\n    Среди всех : " << rareWomen + rareMen
+		<< "\n    Среди женщин: " << rareWomen
+		<< "\n    Среди мужчин: " << rareMen;
 }
 
 
