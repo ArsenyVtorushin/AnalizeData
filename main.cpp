@@ -181,6 +181,8 @@ void Statistics(std::multiset<Name> names)
 	Name popularWomen{ *names.begin() };
 	Name popularMen{ *names.begin() };
 
+	int zeroWomen = 0, zeroMen = 0;
+
 	for (auto& el : names)
 	{
 		if (el.GetQuantity() > popularAll.GetQuantity())
@@ -190,12 +192,18 @@ void Statistics(std::multiset<Name> names)
 		{
 			if (el.GetQuantity() > popularWomen.GetQuantity())
 				popularWomen = el;
+
+			if (el.GetQuantity() == 0)
+				zeroWomen++;
 		}
 
 		if (el.GetSex() == 'М')
 		{
 			if (el.GetQuantity() > popularMen.GetQuantity())
 				popularMen = el;
+
+			if (el.GetQuantity() == 0)
+				zeroMen++;
 		}
 	}
 
@@ -205,4 +213,8 @@ void Statistics(std::multiset<Name> names)
 
 	std::cout << "\n\n2) Самое популярное имя среди женщин: " << popularWomen.GetName()
 		<< "\n   Самое популярное имя среди мужчин: " << popularMen.GetName();
+
+	std::cout << "\n\n3) Не имеют носителей\n    Среди всех: " << zeroWomen + zeroMen
+		<< "\n    Среди женщин: " << zeroWomen
+		<< "\n    Среди мужчин: " << zeroMen;
 }
